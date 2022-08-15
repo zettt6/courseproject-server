@@ -1,14 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-// const router = require('./router')
+const router = require('./router')
 
 const PORT = process.env.PORT || 4000
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-// app.use('/app', router)
+app.use('/app', router)
 
 const start = async () => {
   try {
