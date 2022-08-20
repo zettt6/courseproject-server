@@ -12,7 +12,7 @@ router.post(
   controller.registration
 )
 router.post('/login', controller.login)
-router.post('/checkauth', accessMiddleware, controller.checkAuth)
+router.get('/checkauth', accessMiddleware, controller.checkAuth)
 
 router.get('/users', controller.getUsers)
 

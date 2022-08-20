@@ -31,7 +31,6 @@ class collectionController {
       const collection = await collection.deleteMany({
         _id: `${req.params.id}`,
       })
-      console.log(collection)
       res.status(200).send(collection)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
