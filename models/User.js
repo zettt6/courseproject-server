@@ -17,8 +17,17 @@ const User = new Schema(
       type: String,
       required: [true, 'Please provide a password'],
     },
+    role: { type: String, default: 'USER' },
     token: {
       type: String,
+    },
+    selectedLanguage: {
+      type: String,
+      default: 'EN',
+    },
+    selectedTheme: {
+      type: String,
+      default: 'dark',
     },
   },
   { _id: false }
