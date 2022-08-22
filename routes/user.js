@@ -14,8 +14,4 @@ router.post(
 router.post('/login', controller.login)
 router.get('/checkauth', accessMiddleware, controller.checkAuth)
 
-router.get('/users', controller.getUsers)
-
 module.exports = router
-
-//test

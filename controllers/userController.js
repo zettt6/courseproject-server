@@ -8,7 +8,7 @@ const generateAccessToken = (id, email) => {
   return jwt.sign({ id, email }, secret, { expiresIn: '24h' })
 }
 
-class authController {
+class userController {
   async registration(req, res) {
     try {
       const errors = validationResult(req)
@@ -65,15 +65,6 @@ class authController {
       res.status(500).json({ message: 'Server error' })
     }
   }
-
-  async getUsers(req, res) {
-    try {
-      const users = await User.find()
-      res.json(users)
-    } catch (e) {
-      console.log(e)
-    }
-  }
 }
 
-module.exports = new authController()
+module.exports = new userController()

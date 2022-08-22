@@ -1,8 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const userRouter = require('./routes/user')
 const collectionRouter = require('./routes/collection')
+const userRouter = require('./routes/user')
+const adminRouter = require('./routes/admin')
 
 const PORT = process.env.PORT || 4000
 const app = express()
@@ -12,6 +13,7 @@ app.use(express.json())
 
 app.use('/collection', collectionRouter)
 app.use('/user', userRouter)
+app.use('/admin', adminRouter)
 
 const start = async () => {
   try {
