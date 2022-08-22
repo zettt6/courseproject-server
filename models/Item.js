@@ -8,6 +8,12 @@ const Item = new Schema({
   tags: {
     type: Array,
   },
+  likes: {
+    type: Number,
+  },
+  comments: {
+    type: Array,
+  },
 })
 
 module.exports = model('Item', Item)
