@@ -1,4 +1,3 @@
-const { collection } = require('../models/Collection')
 const Collection = require('../models/Collection')
 
 class collectionController {

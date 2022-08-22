@@ -16,7 +16,7 @@ class adminController {
       console.log(user)
       res.status(200).send(user)
     } catch (e) {
-      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 
@@ -29,7 +29,7 @@ class adminController {
       )
       res.status(200).send(user)
     } catch (e) {
-      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 
@@ -41,7 +41,7 @@ class adminController {
       )
       res.status(200).send(user)
     } catch (e) {
-      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 
@@ -53,7 +53,7 @@ class adminController {
       )
       res.status(200).send(user)
     } catch (e) {
-      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
   async revokeAdminRights(req, res) {
@@ -64,7 +64,7 @@ class adminController {
       )
       res.status(200).send(user)
     } catch (e) {
-      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 }

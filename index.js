@@ -4,6 +4,7 @@ const cors = require('cors')
 const collectionRouter = require('./routes/collection')
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
+const itemRouter = require('./routes/item')
 
 const PORT = process.env.PORT || 4000
 const app = express()
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use('/collection', collectionRouter)
 app.use('/user', userRouter)
 app.use('/admin', adminRouter)
+app.use('/items', itemRouter)
 
 const start = async () => {
   try {

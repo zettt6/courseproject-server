@@ -61,7 +61,6 @@ class userController {
       const user = await User.findOne({ id: req.user.id })
       return res.status(200).send(user)
     } catch (e) {
-      console.log(e)
       res.status(500).json({ message: 'Server error' })
     }
   }
