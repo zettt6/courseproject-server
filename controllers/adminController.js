@@ -12,22 +12,22 @@ class adminController {
 
   async deleteUsers(req, res) {
     try {
-      const user = await User.deleteMany({ _id: `${req.params.id}` })
-      console.log(user)
-      res.status(200).send(user)
+      const { id } = req.params
+      const user = await User.deleteMany({ _id: id })
+      res.status(200).send(user) // ?
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
   }
 
   async blockUsers(req, res) {
-    console.log(req.params)
     try {
-      const user = await User.updateMany(
-        { _id: `${req.params.id}` },
+      const { id } = req.params
+      const updatedUsers = await User.updateMany(
+        { _id: id },
         { status: 'Blocked' }
       )
-      res.status(200).send(user)
+      res.status(200).send(updatedUsers)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -35,11 +35,12 @@ class adminController {
 
   async unblockUsers(req, res) {
     try {
-      const user = await User.updateMany(
-        { _id: `${req.params.id}` },
+      const { id } = req.params
+      const updatedUsers = await User.updateMany(
+        { _id: id },
         { status: 'Active' }
       )
-      res.status(200).send(user)
+      res.status(200).send(updatedUsers)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -47,22 +48,18 @@ class adminController {
 
   async giveAdminRights(req, res) {
     try {
-      const user = await User.updateMany(
-        { _id: `${req.params.id}` },
-        { role: 'ADMIN' }
-      )
-      res.status(200).send(user)
+      const { id } = req.params
+      const updatedUsers = await User.updateMany({ _id: id }, { role: 'ADMIN' })
+      res.status(200).send(updatedUsers)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
   }
   async revokeAdminRights(req, res) {
     try {
-      const user = await User.updateMany(
-        { _id: `${req.params.id}` },
-        { role: 'USER' }
-      )
-      res.status(200).send(user)
+      const { id } = req.params
+      const updatedUsers = await User.updateMany({ _id: id }, { role: 'USER' })
+      res.status(200).send(updatedUsers)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }

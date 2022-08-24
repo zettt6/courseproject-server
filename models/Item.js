@@ -11,8 +11,24 @@ const Item = new Schema({
   likes: {
     type: Number,
   },
-  comments: {
-    type: Array,
+  creatorId: {
+    type: String,
+  },
+  comments: [
+    {
+      author: {
+        type: String,
+      },
+      text: {
+        type: String,
+      },
+      itemId: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    },
+  ],
+  collectionId: {
+    type: mongoose.Schema.Types.ObjectId,
   },
 })
 

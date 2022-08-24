@@ -1,25 +1,26 @@
 const { Schema, model } = require('mongoose')
 const mongoose = require('mongoose')
-const AutoIncrement = require('mongoose-sequence')(mongoose)
 
-const Collection = new Schema(
-  {
-    title: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    subject: {
-      type: String,
-    },
-    image: {
-      type: String,
-    },
+const Collection = new Schema({
+  title: {
+    type: String,
   },
-  { _id: false }
-)
-
-Collection.plugin(AutoIncrement)
+  description: {
+    type: String,
+  },
+  subject: {
+    type: String,
+  },
+  creatorId: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
+  amountOfItems: {
+    type: Number,
+    default: 0,
+  },
+})
 
 module.exports = model('Collection', Collection)

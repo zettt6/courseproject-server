@@ -64,6 +64,22 @@ class userController {
       res.status(500).json({ message: 'Server error' })
     }
   }
+
+  async changeTheme(req, res) {
+    try {
+      const { theme } = req.body
+      const id = req.user.id
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        { selectedTheme: theme }
+      )
+      const users = await User.find()
+
+      res.status(200).send(updatedUser)
+    } catch (e) {
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
 }
 
 module.exports = new userController()

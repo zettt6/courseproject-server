@@ -12,6 +12,9 @@ router.post(
   controller.registration
 )
 router.post('/login', controller.login)
+
 router.get('/checkauth', accessMiddleware, controller.checkAuth)
+
+router.put('/theme', accessMiddleware, controller.changeTheme)
 
 module.exports = router

@@ -29,7 +29,6 @@ const User = new Schema({
   },
   selectedTheme: {
     type: String,
-    default: 'dark',
   },
 })
 
