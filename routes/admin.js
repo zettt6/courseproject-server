@@ -5,17 +5,13 @@ const accessMiddleware = require('../middleware/accessMiddleware')
 
 router.get('/users', accessMiddleware, controller.getUsers)
 
-router.delete('/users/delete/:id', accessMiddleware, controller.deleteUsers)
+router.delete('/users/delete', accessMiddleware, controller.deleteUsers)
 
-router.put('/users/block/:id', accessMiddleware, controller.blockUsers)
-router.put('/users/unblock/:id', accessMiddleware, controller.unblockUsers)
+router.put('/users/block', accessMiddleware, controller.blockUsers)
+router.put('/users/unblock', accessMiddleware, controller.unblockUsers)
+router.put('/users/give-rights', accessMiddleware, controller.giveAdminRights)
 router.put(
-  '/users/give-rights/:id',
-  accessMiddleware,
-  controller.giveAdminRights
-)
-router.put(
-  '/users/revoke-rights/:id',
+  '/users/revoke-rights',
   accessMiddleware,
   controller.revokeAdminRights
 )

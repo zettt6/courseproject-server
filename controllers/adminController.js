@@ -12,9 +12,14 @@ class adminController {
 
   async deleteUsers(req, res) {
     try {
-      const { id } = req.params
-      const user = await User.deleteMany({ _id: id })
-      res.status(200).send(user) // ?
+      const { users } = req.query
+      let deleteUsersTasks = []
+      users.map((user) => {
+        const task = User.deleteMany({ _id: user })
+        deleteUsersTasks.push(task)
+      })
+      await Promise.all(deleteUsersTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -22,12 +27,14 @@ class adminController {
 
   async blockUsers(req, res) {
     try {
-      const { id } = req.params
-      const updatedUsers = await User.updateMany(
-        { _id: id },
-        { status: 'Blocked' }
-      )
-      res.status(200).send(updatedUsers)
+      const { users } = req.body
+      let updateUsersTasks = []
+      users.map((user) => {
+        const task = User.updateMany({ _id: user }, { status: 'Blocked' })
+        updateUsersTasks.push(task)
+      })
+      await Promise.all(updateUsersTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -35,12 +42,14 @@ class adminController {
 
   async unblockUsers(req, res) {
     try {
-      const { id } = req.params
-      const updatedUsers = await User.updateMany(
-        { _id: id },
-        { status: 'Active' }
-      )
-      res.status(200).send(updatedUsers)
+      const { users } = req.body
+      let updateUsersTasks = []
+      users.map((user) => {
+        const task = User.updateMany({ _id: user }, { status: 'Active' })
+        updateUsersTasks.push(task)
+      })
+      await Promise.all(updateUsersTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -48,18 +57,28 @@ class adminController {
 
   async giveAdminRights(req, res) {
     try {
-      const { id } = req.params
-      const updatedUsers = await User.updateMany({ _id: id }, { role: 'ADMIN' })
-      res.status(200).send(updatedUsers)
+      const { users } = req.body
+      let updateUsersTasks = []
+      users.map((user) => {
+        const task = User.updateMany({ _id: user }, { role: 'ADMIN' })
+        updateUsersTasks.push(task)
+      })
+      await Promise.all(updateUsersTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
   }
   async revokeAdminRights(req, res) {
     try {
-      const { id } = req.params
-      const updatedUsers = await User.updateMany({ _id: id }, { role: 'USER' })
-      res.status(200).send(updatedUsers)
+      const { users } = req.body
+      let updateUsersTasks = []
+      users.map((user) => {
+        const task = User.updateMany({ _id: user }, { role: 'USER' })
+        updateUsersTasks.push(task)
+      })
+      await Promise.all(updateUsersTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }

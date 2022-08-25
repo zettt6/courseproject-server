@@ -24,17 +24,19 @@ class itemController {
 
   async createItem(req, res) {
     try {
-      const { title, creatorId, collectionId } = req.body
+      const { title, creatorId, collectionId, tags } = req.body
       const item = new Item({
         title,
         creatorId,
         collectionId,
+        tags,
       })
       await item.save()
-      const collection = await Collection.updateOne(
-        { creatorId: creatorId },
+      await Collection.findOneAndUpdate(
+        { _id: collectionId },
         { $inc: { amountOfItems: 1 } }
       )
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -58,7 +60,6 @@ class itemController {
         { _id: itemId },
         { $push: { comments: comment } }
       )
-
       res.status(200).send(item)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -68,8 +69,13 @@ class itemController {
   async deleteItems(req, res) {
     try {
       const { id } = req.params
-      const items = await Item.deleteMany({ _id: id })
-      res.status(200).send(items)
+      const deletedItem = await Item.findByIdAndDelete(id)
+
+      await Collection.findOneAndUpdate(
+        { _id: deletedItem.collectionId },
+        { $inc: { amountOfItems: -1 } }
+      )
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }

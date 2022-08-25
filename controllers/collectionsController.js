@@ -14,7 +14,7 @@ class collectionsController {
   async getOneCollection(req, res) {
     const { id } = req.params
     try {
-      const collection = await Collection.findOne({ id })
+      const collection = await Collection.findOne({ _id: id })
       res.status(200).send(collection)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -25,7 +25,8 @@ class collectionsController {
     // !
     try {
       const collections = await Collection.find()
-      // .sort().limit()
+        .sort({ amountOfItems: -1 })
+        .limit(5)
       res.status(200).send(collections)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -35,7 +36,7 @@ class collectionsController {
   async createCollection(req, res) {
     try {
       const { title, description, subject, creatorId, image } = req.body
-      console.log(req.body)
+
       const collection = new Collection({
         title,
         description,

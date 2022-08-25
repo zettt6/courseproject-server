@@ -58,7 +58,7 @@ class userController {
 
   async checkAuth(req, res) {
     try {
-      const user = await User.findOne({ id: req.user.id })
+      const user = await User.findOne({ _id: req.user.id })
       return res.status(200).send(user)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
