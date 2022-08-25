@@ -68,28 +68,32 @@ class itemController {
 
   async deleteItems(req, res) {
     try {
-      const { id } = req.params
-      const deletedItem = await Item.findByIdAndDelete(id)
-
-      await Collection.findOneAndUpdate(
-        { _id: deletedItem.collectionId },
-        { $inc: { amountOfItems: -1 } }
-      )
+      const { items } = req.query
+      let deleteItemsTasks = []
+      items.map((item) => {
+        const task = Item.deleteMany({ _id: item })
+        deleteItemsTasks.push(task)
+      })
+      await Promise.all(deleteItemsTasks)
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
   }
 
-  // async updateItem(req, res) {
-  //   console.log(req.body)
-  //   try {
-  //     const item = await Item.updateMany({ tags: 'new title' })
-  //     res.status(200).send(item)
-  //   } catch (e) {
-  //     res.status(500).json({ message: 'Server error' })
-  //   }
-  // }
+  async updateItem(req, res) {
+    try {
+      const { updatedItem } = req.body
+      await Item.updateMany(
+        { _id: updatedItem._id },
+        { title: updatedItem.title }
+      )
+      const items = await Item.find()
+      res.status(200).send()
+    } catch (e) {
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
 }
 
 module.exports = new itemController()

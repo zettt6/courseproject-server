@@ -52,27 +52,36 @@ class collectionsController {
 
   async deleteCollections(req, res) {
     try {
-      const { id } = req.params
-      const collections = await Collection.deleteMany({ _id: id })
-      res.status(200).send(collections)
+      const { collections } = req.query
+      let deleteCollectionsTasks = []
+      collections.map((collection) => {
+        const task = Collection.deleteMany({ _id: collection })
+        deleteCollectionsTasks.push(task)
+      })
+      await Promise.all(deleteCollectionsTasks)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
   }
 
-  async updateCollection(req, res) {
-    try {
-      const { id } = req.params
-      const collection = await Collection.updateOne(
-        { _id: id },
-        { title: 'new title' }
-      )
-
-      res.status(200).send(collection)
-    } catch (e) {
-      res.status(500).json({ message: 'Server error' })
-    }
-  }
+  // async updateCollection(req, res) {
+  //   try {
+  //     const { collections } = req.body
+  //     let updateCollectionsTasks = []
+  //     collections.map((collection) => {
+  //       const task = Collection.updateMany(
+  //         { _id: collection },
+  //         { title: 'New title' }
+  //       )
+  //       updateCollectionsTasks.push(task)
+  //     })
+  //     await Promise.all(updateCollectionsTasks)
+  //     res.status(200).send()
+  //   } catch (e) {
+  //     res.status(500).json({ message: 'Server error' })
+  //   }
+  // }
 }
 
 module.exports = new collectionsController()
