@@ -10,12 +10,12 @@ router.delete('/users/delete/:id', accessMiddleware, controller.deleteUsers)
 router.put('/users/block/:id', accessMiddleware, controller.blockUsers)
 router.put('/users/unblock/:id', accessMiddleware, controller.unblockUsers)
 router.put(
-  '/users/giverights/:id',
+  '/users/give-rights/:id',
   accessMiddleware,
   controller.giveAdminRights
 )
 router.put(
-  '/users/revokerights/:id',
+  '/users/revoke-rights/:id',
   accessMiddleware,
   controller.revokeAdminRights
 )

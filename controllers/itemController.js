@@ -58,6 +58,7 @@ class itemController {
         { _id: itemId },
         { $push: { comments: comment } }
       )
+
       res.status(200).send(item)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })

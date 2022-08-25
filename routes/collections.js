@@ -7,8 +7,9 @@ router.get('/', controller.getCollections)
 router.get('/limit', controller.getTheBiggestCollections)
 router.get('/:id', controller.getOneCollection)
 
-router.post('/', controller.createCollection)
-router.post('/:id', accessMiddleware, controller.deleteCollection)
+router.post('/', accessMiddleware, controller.createCollection)
+
+router.delete('/delete/:id', accessMiddleware, controller.deleteCollections)
 router.post('/:id', accessMiddleware, controller.updateCollection)
 
 module.exports = router

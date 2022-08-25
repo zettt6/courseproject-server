@@ -34,25 +34,26 @@ class collectionsController {
 
   async createCollection(req, res) {
     try {
-      const { title, description, subject, creatorId } = req.body
+      const { title, description, subject, creatorId, image } = req.body
+      console.log(req.body)
       const collection = new Collection({
         title,
         description,
         subject,
         creatorId,
+        image,
       })
       await collection.save()
     } catch (e) {
-      console.log(e)
       res.status(500).json({ message: 'Server error' })
     }
   }
 
-  async deleteCollection(req, res) {
+  async deleteCollections(req, res) {
     try {
       const { id } = req.params
-      const collection = await Collection.deleteMany({ _id: id })
-      res.status(200).send(collection)
+      const collections = await Collection.deleteMany({ _id: id })
+      res.status(200).send(collections)
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
