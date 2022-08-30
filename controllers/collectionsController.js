@@ -3,8 +3,8 @@ const Collection = require('../models/Collection')
 class collectionsController {
   async getCollections(req, res) {
     try {
-      const { creatorId } = req.query
-      const collections = await Collection.find({ creatorId })
+      const { creator } = req.query
+      const collections = await Collection.find({ creator })
       res.status(200).send(collections)
     } catch (e) {
       console.log(e)
@@ -35,16 +35,18 @@ class collectionsController {
 
   async createCollection(req, res) {
     try {
-      const { title, description, subject, creatorId, image } = req.body
+      const { title, description, subject, creator, image, additionalField } =
+        req.body
 
       const collection = new Collection({
         title,
         description,
         subject,
-        creatorId,
+        creator,
         image,
       })
       await collection.save()
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -65,23 +67,14 @@ class collectionsController {
     }
   }
 
-  // async updateCollection(req, res) {
-  //   try {
-  //     const { collections } = req.body
-  //     let updateCollectionsTasks = []
-  //     collections.map((collection) => {
-  //       const task = Collection.updateMany(
-  //         { _id: collection },
-  //         { title: 'New title' }
-  //       )
-  //       updateCollectionsTasks.push(task)
-  //     })
-  //     await Promise.all(updateCollectionsTasks)
-  //     res.status(200).send()
-  //   } catch (e) {
-  //     res.status(500).json({ message: 'Server error' })
-  //   }
-  // }
+  async getTopics(req, res) {
+    try {
+      res.status(200).send()
+    } catch (e) {
+      console.error(e)
+      res.status(500).json(e)
+    }
+  }
 }
 
 module.exports = new collectionsController()

@@ -80,6 +80,29 @@ class userController {
       res.status(500).json({ message: 'Server error' })
     }
   }
+
+  async setLike(req, res) {
+    try {
+      const { userId, collectionId } = req.body
+      const user = await User.findOne({ _id: userId })
+
+      if (!user.likes.includes(collectionId)) {
+        await User.updateOne(
+          { _id: userId },
+          { $push: { likes: collectionId } }
+        )
+        res.status(200).send(user.likes)
+      } else if (user.likes.length) {
+        await User.updateOne(
+          { _id: userId },
+          { $pull: { likes: collectionId } }
+        )
+        res.status(200).send(user.likes)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 module.exports = new userController()

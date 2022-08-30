@@ -30,6 +30,9 @@ const User = new Schema({
   selectedTheme: {
     type: String,
   },
+  likes: {
+    type: Array,
+  },
 })
 
 module.exports = model('User', User)

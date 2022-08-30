@@ -1,35 +1,28 @@
 const { Schema, model } = require('mongoose')
 const mongoose = require('mongoose')
+const MongoosePaginate = require('mongoose-paginate-v2')
 
-const Item = new Schema({
-  title: {
-    type: String,
-  },
-  tags: {
-    type: Array,
-  },
-  likes: {
-    type: Number,
-  },
-  creatorId: {
-    type: String,
-  },
-  comments: [
-    {
-      author: {
-        type: String,
-      },
-      text: {
-        type: String,
-      },
-      itemId: {
-        type: mongoose.Schema.Types.ObjectId,
-      },
+const Item = new Schema(
+  {
+    title: {
+      type: String,
     },
-  ],
-  collectionId: {
-    type: mongoose.Schema.Types.ObjectId,
+    tags: {
+      type: Array,
+    },
+    creator: {
+      type: String,
+    },
+    comments: {
+      type: Array,
+    },
+    collectionId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
   },
-})
+  { timestamps: true }
+)
+
+Item.plugin(MongoosePaginate)
 
 module.exports = model('Item', Item)

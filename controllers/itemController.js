@@ -22,12 +22,27 @@ class itemController {
     }
   }
 
+  async getLastAddedItems(req, res) {
+    try {
+      const { page, perPage } = req.query
+      const options = {
+        page: parseInt(page, 10) || 1,
+        limit: parseInt(perPage, 10) || 10,
+        sort: { createdAt: -1 },
+      }
+      const items = await Item.paginate({}, options)
+      res.status(200).send(items)
+    } catch (e) {
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+
   async createItem(req, res) {
     try {
-      const { title, creatorId, collectionId, tags } = req.body
+      const { title, creator, collectionId, tags } = req.body
       const item = new Item({
         title,
-        creatorId,
+        creator,
         collectionId,
         tags,
       })
@@ -42,26 +57,18 @@ class itemController {
     }
   }
 
-  async addTags(req, res) {
-    try {
-      const { tags } = req.body
-      const item = await Item.updateMany({ tags: tags })
-      res.status(200).send(item)
-    } catch (e) {
-      res.status(500).json({ message: 'Server error' })
-    }
-  }
-
   async addComment(req, res) {
     try {
       const { author, text, itemId } = req.body
       const comment = { author: author, text: text }
       const item = await Item.updateOne(
         { _id: itemId },
-        { $push: { comments: comment } }
+        { $push: { comments: comment } },
+        { new: true }
       )
-      res.status(200).send(item)
+      res.status(200).send()
     } catch (e) {
+      console.log(e)
       res.status(500).json({ message: 'Server error' })
     }
   }
