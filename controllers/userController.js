@@ -73,9 +73,7 @@ class userController {
         { _id: id },
         { selectedTheme: theme }
       )
-      const users = await User.find()
-
-      res.status(200).send(updatedUser)
+      res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
     }
@@ -101,6 +99,20 @@ class userController {
       }
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  async changeLanguage(req, res) {
+    try {
+      const { language } = req.body
+      const id = req.user.id
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        { selectedLanguage: language }
+      )
+      res.status(200).send()
+    } catch (e) {
+      res.status(500).json({ message: 'Server error' })
     }
   }
 }

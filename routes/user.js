@@ -16,6 +16,7 @@ router.post('/login', controller.login)
 router.get('/checkauth', accessMiddleware, controller.checkAuth)
 
 router.put('/theme', accessMiddleware, controller.changeTheme)
+router.put('/language', accessMiddleware, controller.changeLanguage)
 router.post('/like', controller.setLike)
 
 module.exports = router

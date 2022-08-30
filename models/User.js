@@ -25,7 +25,6 @@ const User = new Schema({
   },
   selectedLanguage: {
     type: String,
-    default: 'EN',
   },
   selectedTheme: {
     type: String,

@@ -27,7 +27,7 @@ class itemController {
       const { page, perPage } = req.query
       const options = {
         page: parseInt(page, 10) || 1,
-        limit: parseInt(perPage, 10) || 10,
+        limit: parseInt(perPage, 10) || 5,
         sort: { createdAt: -1 },
       }
       const items = await Item.paginate({}, options)
