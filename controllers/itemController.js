@@ -33,7 +33,8 @@ class itemController {
       const items = await Item.paginate({}, options)
       res.status(200).send(items)
     } catch (e) {
-      res.status(500).json({ message: 'Server error' })
+      console.log(e)
+      res.status(500).json(e)
     }
   }
 
@@ -122,6 +123,19 @@ class itemController {
       }
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  async searchTag(req, res) {
+    try {
+      const { search } = req.query
+      console.log(req.body)
+      const regex = new RegExp(search, 'i')
+      const tags = await Item.find({ tags: { $regex: regex } })
+      res.status(200).json(tags)
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 }

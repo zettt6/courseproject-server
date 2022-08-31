@@ -22,7 +22,6 @@ module.exports = async function (req, res, next) {
     req.user = decodedData
     next()
   } catch (e) {
-    console.log(e)
-    return res.status(500).json({ message: 'Server error' })
+    return res.status(500).json(e)
   }
 }

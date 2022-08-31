@@ -5,6 +5,7 @@ const accessMiddleware = require('../middleware/accessMiddleware')
 
 router.get('/', controller.getItems)
 router.get('/latest', controller.getLastAddedItems)
+// router.get('/search-tag', controller.searchTag)
 router.get('/:id', controller.getOneItem)
 
 router.post('/like', controller.setLike)

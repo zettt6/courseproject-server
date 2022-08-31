@@ -89,7 +89,7 @@ class userController {
       )
       res.status(200).send()
     } catch (e) {
-      res.status(500).json({ message: 'Server error' })
+      res.status(500).json(e)
     }
   }
 }

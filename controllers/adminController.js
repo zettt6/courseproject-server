@@ -19,6 +19,9 @@ class adminController {
         deleteUsersTasks.push(task)
       })
       await Promise.all(deleteUsersTasks)
+
+      // delete collections too
+
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
