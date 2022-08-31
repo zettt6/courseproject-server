@@ -7,6 +7,7 @@ router.get('/', controller.getItems)
 router.get('/latest', controller.getLastAddedItems)
 router.get('/:id', controller.getOneItem)
 
+router.post('/like', controller.setLike)
 router.post('/', controller.createItem)
 
 router.delete('/delete', accessMiddleware, controller.deleteItems)

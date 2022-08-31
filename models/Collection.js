@@ -21,6 +21,9 @@ const Collection = new Schema({
     type: Number,
     default: 0,
   },
+  additionalFields: {
+    type: Array,
+  },
 })
 
 module.exports = model('Collection', Collection)

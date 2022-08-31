@@ -40,17 +40,17 @@ class itemController {
   async createItem(req, res) {
     try {
       const { title, creator, collectionId, tags } = req.body
+
+      const collection = await Collection.findOne({ _id: collectionId })
+      await collection.updateOne({ $inc: { amountOfItems: 1 } })
       const item = new Item({
         title,
         creator,
         collectionId,
         tags,
+        additionalFields: collection.additionalFields,
       })
       await item.save()
-      await Collection.findOneAndUpdate(
-        { _id: collectionId },
-        { $inc: { amountOfItems: 1 } }
-      )
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -99,6 +99,29 @@ class itemController {
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  async setLike(req, res) {
+    try {
+      const { userId, itemId } = req.body
+      const item = await Item.findOne({ _id: itemId })
+
+      if (!item.whoLikeIt.includes(userId)) {
+        await Item.updateOne(
+          { _id: itemId },
+          { $push: { whoLikeIt: userId }, $inc: { likes: 1 } }
+        )
+        res.status(200).send()
+      } else if (item.whoLikeIt.length) {
+        await Item.updateOne(
+          { _id: itemId },
+          { $pull: { whoLikeIt: userId }, $inc: { likes: -1 } }
+        )
+        res.status(200).send()
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 }

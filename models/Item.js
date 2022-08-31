@@ -10,6 +10,13 @@ const Item = new Schema(
     tags: {
       type: Array,
     },
+    whoLikeIt: {
+      type: Array,
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
     creator: {
       type: String,
     },
@@ -18,6 +25,9 @@ const Item = new Schema(
     },
     collectionId: {
       type: mongoose.Schema.Types.ObjectId,
+    },
+    additionalFields: {
+      type: Array,
     },
   },
   { timestamps: true }
