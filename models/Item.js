@@ -20,19 +20,20 @@ const Item = new Schema(
     creator: {
       type: String,
     },
-    comments: {
-      type: Array,
-    },
     collectionId: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    collectionName: {
+      type: String,
+    },
     additionalFields: {
-      type: Array,
+      type: Object,
     },
   },
   { timestamps: true }
 )
 
 Item.plugin(MongoosePaginate)
+Item.index({ '$**': 'text' })
 
 module.exports = model('Item', Item)

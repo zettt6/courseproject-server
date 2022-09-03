@@ -8,7 +8,7 @@ const Collection = new Schema({
   description: {
     type: String,
   },
-  subject: {
+  topic: {
     type: String,
   },
   creator: {
@@ -25,5 +25,7 @@ const Collection = new Schema({
     type: Array,
   },
 })
+
+Collection.index({ '$**': 'text' })
 
 module.exports = model('Collection', Collection)

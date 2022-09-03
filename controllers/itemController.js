@@ -1,4 +1,5 @@
 const Collection = require('../models/Collection')
+const Comment = require('../models/Comment')
 const Item = require('../models/Item')
 
 class itemController {
@@ -31,7 +32,8 @@ class itemController {
         sort: { createdAt: -1 },
       }
       const items = await Item.paginate({}, options)
-      res.status(200).send(items)
+      const collections = await Collection.find()
+      res.status(200).send({ items, collections })
     } catch (e) {
       console.log(e)
       res.status(500).json(e)
@@ -40,36 +42,25 @@ class itemController {
 
   async createItem(req, res) {
     try {
-      const { title, creator, collectionId, tags } = req.body
-
+      const { fields, creator, collectionId, tags } = req.body
       const collection = await Collection.findOne({ _id: collectionId })
       await collection.updateOne({ $inc: { amountOfItems: 1 } })
+
+      const { title, ...additionalFields } = fields
+
       const item = new Item({
-        title,
         creator,
         collectionId,
+        collectionName: collection.title,
         tags,
-        additionalFields: collection.additionalFields,
+        title,
+        additionalFields,
       })
+      const items = await Item.find()
+      console.log(items)
       await item.save()
       res.status(200).send()
     } catch (e) {
-      res.status(500).json({ message: 'Server error' })
-    }
-  }
-
-  async addComment(req, res) {
-    try {
-      const { author, text, itemId } = req.body
-      const comment = { author: author, text: text }
-      const item = await Item.updateOne(
-        { _id: itemId },
-        { $push: { comments: comment } },
-        { new: true }
-      )
-      res.status(200).send()
-    } catch (e) {
-      console.log(e)
       res.status(500).json({ message: 'Server error' })
     }
   }
@@ -82,6 +73,8 @@ class itemController {
         const task = Item.deleteMany({ _id: item })
         deleteItemsTasks.push(task)
       })
+      // delete comments too
+
       await Promise.all(deleteItemsTasks)
       res.status(200).send()
     } catch (e) {
@@ -107,12 +100,14 @@ class itemController {
     try {
       const { userId, itemId } = req.body
       const item = await Item.findOne({ _id: itemId })
+      let newLikes = 0
 
       if (!item.whoLikeIt.includes(userId)) {
         await Item.updateOne(
           { _id: itemId },
           { $push: { whoLikeIt: userId }, $inc: { likes: 1 } }
         )
+
         res.status(200).send()
       } else if (item.whoLikeIt.length) {
         await Item.updateOne(
@@ -129,13 +124,26 @@ class itemController {
   async searchTag(req, res) {
     try {
       const { search } = req.query
-      console.log(req.body)
+
       const regex = new RegExp(search, 'i')
+
       const tags = await Item.find({ tags: { $regex: regex } })
       res.status(200).json(tags)
     } catch (e) {
       console.log(e)
-      res.status(500).json({ message: 'Server error' })
+      res.status(500).json(e)
+    }
+  }
+
+  async itemSearch(req, res) {
+    try {
+      const searchResultInItem = await Item.find({ $text: { $search: 'bebe' } })
+      // const searchResultInComment = await Comment.find({
+      //   $text: { $search: 'bebe' },
+      // })
+      // console.log(searchResultInComment)
+    } catch (e) {
+      res.status(500).json(e)
     }
   }
 }

@@ -12,6 +12,23 @@ class collectionsController {
     }
   }
 
+  async getTopics(req, res) {
+    try {
+      let topics = [
+        { id: 1, name: 'books' },
+        { id: 2, name: 'signs' },
+        { id: 3, name: 'silverware' },
+        { id: 4, name: 'postage stamps' },
+        { id: 5, name: 'coins' },
+        { id: 6, name: 'porcelain dolls' },
+      ]
+      res.status(200).send(topics)
+    } catch (e) {
+      console.error(e)
+      res.status(500).json(e)
+    }
+  }
+
   async getOneCollection(req, res) {
     const { id } = req.params
     try {
@@ -36,18 +53,20 @@ class collectionsController {
 
   async createCollection(req, res) {
     try {
-      const { title, description, subject, creator, image, additionalFields } =
+      const { title, description, topic, creator, image, additionalFields } =
         req.body
 
       const collection = new Collection({
         title,
         description,
-        subject,
+        topic,
         creator,
         image,
         additionalFields,
       })
       await collection.save()
+
+      console.log(req.body)
 
       res.status(200).send()
     } catch (e) {
@@ -68,30 +87,10 @@ class collectionsController {
 
       // delete items too
 
-      // let deleteItemsTasks = []
-      // collections.map((collection) => {
-      //   const task = Item.deleteMany({ collectionId: collection })
-      //   deleteItemsTasks.push(task)
-      // })
-
-      // await Promise.all(deleteItemsTasks)
-
-      // const items = await Item.find()
-      // console.log(items)
-
       res.status(200).send()
     } catch (e) {
       console.log(e)
       res.status(500).json({ message: 'Server error' })
-    }
-  }
-
-  async getTopics(req, res) {
-    try {
-      res.status(200).send()
-    } catch (e) {
-      console.error(e)
-      res.status(500).json(e)
     }
   }
 }

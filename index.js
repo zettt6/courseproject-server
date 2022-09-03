@@ -5,6 +5,7 @@ const collectionsRouter = require('./routes/collections')
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
 const itemRouter = require('./routes/item')
+const commentsRouter = require('./routes/comments')
 
 const PORT = process.env.PORT || 4000
 const app = express()
@@ -16,6 +17,7 @@ app.use('/collections', collectionsRouter)
 app.use('/user', userRouter)
 app.use('/admin', adminRouter)
 app.use('/items', itemRouter)
+app.use('/comments', commentsRouter)
 
 const start = async () => {
   try {

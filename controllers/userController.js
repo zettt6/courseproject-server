@@ -87,9 +87,9 @@ class userController {
         { _id: id },
         { selectedLanguage: language }
       )
-      res.status(200).send()
+      res.status(200).send(updatedUser)
     } catch (e) {
-      res.status(500).json(e)
+      res.status(500).json({ message: 'Server error' })
     }
   }
 }

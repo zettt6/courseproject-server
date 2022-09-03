@@ -5,9 +5,8 @@ const accessMiddleware = require('../middleware/accessMiddleware')
 
 router.get('/', controller.getCollections)
 router.get('/limit', controller.getTheBiggestCollections)
+router.get('/topics', controller.getTopics)
 router.get('/:id', controller.getOneCollection)
-
-router.post('/req', controller.getTopics)
 
 router.delete('/delete', accessMiddleware, controller.deleteCollections)
 
