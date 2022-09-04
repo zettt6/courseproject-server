@@ -40,7 +40,6 @@ class collectionsController {
   }
 
   async getTheBiggestCollections(req, res) {
-    // !
     try {
       const collections = await Collection.find()
         .sort({ amountOfItems: -1 })
@@ -65,9 +64,6 @@ class collectionsController {
         additionalFields,
       })
       await collection.save()
-
-      console.log(req.body)
-
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -87,6 +83,34 @@ class collectionsController {
 
       // delete items too
 
+      res.status(200).send()
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+
+  async updateCollection(req, res) {
+    try {
+      const {
+        collectionId,
+        newTitle,
+        newTopic,
+        newDescription,
+        newImage,
+        newAdditionalFields,
+      } = req.body
+
+      const item = await Collection.updateOne(
+        { _id: collectionId },
+        {
+          title: newTitle,
+          topic: newTopic,
+          description: newDescription,
+          image: newImage,
+          additionalFields: newAdditionalFields,
+        }
+      )
       res.status(200).send()
     } catch (e) {
       console.log(e)

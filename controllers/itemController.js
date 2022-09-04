@@ -5,7 +5,7 @@ const Item = require('../models/Item')
 class itemController {
   async getItems(req, res) {
     try {
-      const { collectionid } = req.headers // ?
+      const { collectionid } = req.headers
       const items = await Item.find({ collectionId: collectionid })
       res.status(200).send(items)
     } catch (e) {
@@ -43,11 +43,9 @@ class itemController {
   async createItem(req, res) {
     try {
       const { fields, creator, collectionId, tags } = req.body
+      const { title, ...additionalFields } = fields
       const collection = await Collection.findOne({ _id: collectionId })
       await collection.updateOne({ $inc: { amountOfItems: 1 } })
-
-      const { title, ...additionalFields } = fields
-
       const item = new Item({
         creator,
         collectionId,
@@ -56,8 +54,6 @@ class itemController {
         title,
         additionalFields,
       })
-      const items = await Item.find()
-      console.log(items)
       await item.save()
       res.status(200).send()
     } catch (e) {
@@ -85,11 +81,10 @@ class itemController {
   async updateItem(req, res) {
     try {
       const { updatedItem } = req.body
-      await Item.updateMany(
+      await Item.updateOne(
         { _id: updatedItem._id },
         { title: updatedItem.title }
       )
-      const items = await Item.find()
       res.status(200).send()
     } catch (e) {
       res.status(500).json({ message: 'Server error' })
@@ -100,14 +95,11 @@ class itemController {
     try {
       const { userId, itemId } = req.body
       const item = await Item.findOne({ _id: itemId })
-      let newLikes = 0
-
       if (!item.whoLikeIt.includes(userId)) {
         await Item.updateOne(
           { _id: itemId },
           { $push: { whoLikeIt: userId }, $inc: { likes: 1 } }
         )
-
         res.status(200).send()
       } else if (item.whoLikeIt.length) {
         await Item.updateOne(
@@ -124,9 +116,7 @@ class itemController {
   async searchTag(req, res) {
     try {
       const { search } = req.query
-
       const regex = new RegExp(search, 'i')
-
       const tags = await Item.find({ tags: { $regex: regex } })
       res.status(200).json(tags)
     } catch (e) {

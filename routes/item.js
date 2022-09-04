@@ -9,11 +9,11 @@ router.get('/latest', controller.getLastAddedItems)
 router.get('/search-tag', controller.searchTag)
 router.get('/:id', controller.getOneItem)
 
-router.post('/like', controller.setLike)
-router.post('/', controller.createItem)
+router.post('/like', accessMiddleware, controller.setLike)
+router.post('/', accessMiddleware, controller.createItem)
 
 router.delete('/delete', accessMiddleware, controller.deleteItems)
 
-router.put('/update', controller.updateItem)
+router.put('/update', accessMiddleware, controller.updateItem)
 
 module.exports = router
