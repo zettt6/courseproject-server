@@ -1,3 +1,4 @@
+const Comment = require('../models/Comment')
 const User = require('../models/User')
 
 class adminController {
@@ -19,8 +20,6 @@ class adminController {
         deleteUsersTasks.push(task)
       })
       await Promise.all(deleteUsersTasks)
-
-      // delete collections too
 
       res.status(200).send()
     } catch (e) {

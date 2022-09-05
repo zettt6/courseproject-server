@@ -11,7 +11,7 @@ const Collection = new Schema({
   topic: {
     type: String,
   },
-  creator: {
+  creatorName: {
     type: String,
   },
   image: {

@@ -17,7 +17,7 @@ const Item = new Schema(
       type: Number,
       default: 0,
     },
-    creator: {
+    creatorName: {
       type: String,
     },
     collectionId: {

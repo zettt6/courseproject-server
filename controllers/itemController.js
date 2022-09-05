@@ -42,12 +42,12 @@ class itemController {
 
   async createItem(req, res) {
     try {
-      const { fields, creator, collectionId, tags } = req.body
+      const { fields, creatorName, collectionId, tags } = req.body
       const { title, ...additionalFields } = fields
       const collection = await Collection.findOne({ _id: collectionId })
       await collection.updateOne({ $inc: { amountOfItems: 1 } })
       const item = new Item({
-        creator,
+        creatorName,
         collectionId,
         collectionName: collection.title,
         tags,
@@ -69,7 +69,6 @@ class itemController {
         const task = Item.deleteMany({ _id: item })
         deleteItemsTasks.push(task)
       })
-      // delete comments too
 
       await Promise.all(deleteItemsTasks)
       res.status(200).send()
@@ -83,7 +82,10 @@ class itemController {
       const { updatedItem } = req.body
       await Item.updateOne(
         { _id: updatedItem._id },
-        { title: updatedItem.title }
+        {
+          title: updatedItem.title,
+          additionalFields: updatedItem.additionalFields,
+        }
       )
       res.status(200).send()
     } catch (e) {
@@ -113,29 +115,29 @@ class itemController {
     }
   }
 
-  async searchTag(req, res) {
-    try {
-      const { search } = req.query
-      const regex = new RegExp(search, 'i')
-      const tags = await Item.find({ tags: { $regex: regex } })
-      res.status(200).json(tags)
-    } catch (e) {
-      console.log(e)
-      res.status(500).json(e)
-    }
-  }
+  // async searchTag(req, res) {
+  //   try {
+  //     const { search } = req.query
+  //     const regex = new RegExp(search, 'i')
+  //     const tags = await Item.find({ tags: { $regex: regex } })
+  //     res.status(200).json(tags)
+  //   } catch (e) {
+  //     console.log(e)
+  //     res.status(500).json(e)
+  //   }
+  // }
 
-  async itemSearch(req, res) {
-    try {
-      const searchResultInItem = await Item.find({ $text: { $search: 'bebe' } })
-      // const searchResultInComment = await Comment.find({
-      //   $text: { $search: 'bebe' },
-      // })
-      // console.log(searchResultInComment)
-    } catch (e) {
-      res.status(500).json(e)
-    }
-  }
+  // async itemSearch(req, res) {
+  //   try {
+  //     const searchResultInItem = await Item.find({ $text: { $search: 'bebe' } })
+  //     // const searchResultInComment = await Comment.find({
+  //     //   $text: { $search: 'bebe' },
+  //     // })
+  //     // console.log(searchResultInComment)
+  //   } catch (e) {
+  //     res.status(500).json(e)
+  //   }
+  // }
 }
 
 module.exports = new itemController()

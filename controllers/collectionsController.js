@@ -1,11 +1,12 @@
 const Collection = require('../models/Collection')
+const Comment = require('../models/Comment')
 const Item = require('../models/Item')
 
 class collectionsController {
   async getCollections(req, res) {
     try {
-      const { creator } = req.query
-      const collections = await Collection.find({ creator })
+      const { creatorName } = req.query
+      const collections = await Collection.find({ creatorName })
       res.status(200).send(collections)
     } catch (e) {
       console.log(e)
@@ -15,12 +16,12 @@ class collectionsController {
   async getTopics(req, res) {
     try {
       let topics = [
-        { id: 1, name: 'books' },
-        { id: 2, name: 'signs' },
-        { id: 3, name: 'silverware' },
-        { id: 4, name: 'postage stamps' },
-        { id: 5, name: 'coins' },
-        { id: 6, name: 'porcelain dolls' },
+        'books',
+        'signs',
+        'silverware',
+        'postage stamps',
+        'coins',
+        'porcelain dolls',
       ]
       res.status(200).send(topics)
     } catch (e) {
@@ -52,14 +53,20 @@ class collectionsController {
 
   async createCollection(req, res) {
     try {
-      const { title, description, topic, creator, image, additionalFields } =
-        req.body
+      const {
+        title,
+        description,
+        topic,
+        creatorName,
+        image,
+        additionalFields,
+      } = req.body
 
       const collection = new Collection({
         title,
         description,
         topic,
-        creator,
+        creatorName,
         image,
         additionalFields,
       })
@@ -78,11 +85,7 @@ class collectionsController {
         const task = Collection.deleteMany({ _id: collection })
         deleteCollectionsTasks.push(task)
       })
-
       await Promise.all(deleteCollectionsTasks)
-
-      // delete items too
-
       res.status(200).send()
     } catch (e) {
       console.log(e)
